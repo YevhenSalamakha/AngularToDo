@@ -19,12 +19,15 @@ export class TodoComponent implements OnInit {
   doneTasks: Itask[] = [];
   updateIndex!: any;
   isEditEnabled: boolean = false;
+  
   constructor(private formbuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.todoForm = this.formbuilder.group({
       item: ['', Validators.required],
     });
+
+    this.watchdone();
   }
 
   addTask() {
@@ -59,6 +62,24 @@ export class TodoComponent implements OnInit {
 
   deleteDoneTask(i: number) {
     this.doneTasks.splice(i, 1);
+  }
+
+  watchdone() {
+    console.log(this.doneTasks);
+  }
+
+  request() {
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+        doneTasks: this.doneTasks,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   drop(event: CdkDragDrop<Itask[]>) {
