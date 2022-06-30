@@ -14,9 +14,11 @@ import { Itask } from 'src/app/model/task';
 })
 export class TodoComponent implements OnInit {
   todoForm!: FormGroup;
-  tasks: Itask[] = [];
-  inprogress: Itask[] = [];
-  done: Itask[] = [];
+  toDotasks: Itask[] = [];
+  inprogressTasks: Itask[] = [];
+  doneTasks: Itask[] = [];
+  updateIndex!: any;
+  isEditEnabled: boolean = false;
   constructor(private formbuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -26,10 +28,37 @@ export class TodoComponent implements OnInit {
   }
 
   addTask() {
-    this.tasks.push({
+    this.toDotasks.push({
       description: this.todoForm.value.item,
       done: false,
     });
+    this.todoForm.reset();
+  }
+
+  editTask(item: Itask, i: number) {
+    this.todoForm.controls['item'].setValue(item.description);
+    this.updateIndex = i;
+    this.isEditEnabled = true;
+  }
+
+  updateTask() {
+    this.toDotasks[this.updateIndex].description = this.todoForm.value.item;
+    this.toDotasks[this.updateIndex].done = false;
+    this.todoForm.reset();
+    this.updateIndex = undefined;
+    this.isEditEnabled = false;
+  }
+
+  deleteToDoTask(i: number) {
+    this.toDotasks.splice(i, 1);
+  }
+
+  deleteInProgressTask(i: number) {
+    this.inprogressTasks.splice(i, 1);
+  }
+
+  deleteDoneTask(i: number) {
+    this.doneTasks.splice(i, 1);
   }
 
   drop(event: CdkDragDrop<Itask[]>) {
