@@ -80,54 +80,24 @@
               </div>
             </div>
           </div>
+         
           <div class="col-md-4">
             <div class="example-container">
               <h2 class="head-title">
-                IN PROGRESS
-                <span *ngIf="inprogressTasks.length > 0">
-                  - {{ inprogressTasks.length }}
+                COMPLETED
+                <span *ngIf="completedTasks.length > 0">
+                  - {{ completedTasks.length }}
                 </span>
               </h2>
               <div
                 cdkDropList
-                [cdkDropListData]="inprogressTasks"
+                [cdkDropListData]="completedTasks"
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
                 <div
                   class="example-box"
-                  *ngFor="let item of inprogressTasks; let i = index"
-                  cdkDrag
-                >
-                  {{ item.description }}
-                  <button
-                    mat-icon-button
-                    color="warn"
-                    (click)="deleteInProgressTask(i)"
-                  >
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="example-container">
-              <h2 class="head-title">
-                DONE
-                <span *ngIf="doneTasks.length > 0">
-                  - {{ doneTasks.length }}
-                </span>
-              </h2>
-              <div
-                cdkDropList
-                [cdkDropListData]="doneTasks"
-                class="example-list"
-                (cdkDropListDropped)="drop($event)"
-              >
-                <div
-                  class="example-box"
-                  *ngFor="let item of doneTasks; let i = index"
+                  *ngFor="let item of completedTasks; let i = index"
                   cdkDrag
                 >
                   {{ item.description }}
@@ -135,7 +105,7 @@
                     <button
                       mat-icon-button
                       color="warn"
-                      (click)="deleteDoneTask(i)"
+                      (click)="deleteCompletedTask(i)"
                     >
                       <mat-icon>delete</mat-icon>
                     </button>

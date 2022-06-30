@@ -15,19 +15,16 @@ import { Itask } from 'src/app/model/task';
 export class TodoComponent implements OnInit {
   todoForm!: FormGroup;
   toDotasks: Itask[] = [];
-  inprogressTasks: Itask[] = [];
-  doneTasks: Itask[] = [];
+  completedTasks: Itask[] = [];
   updateIndex!: any;
   isEditEnabled: boolean = false;
-  
+
   constructor(private formbuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.todoForm = this.formbuilder.group({
       item: ['', Validators.required],
     });
-
-    this.watchdone();
   }
 
   addTask() {
@@ -56,23 +53,15 @@ export class TodoComponent implements OnInit {
     this.toDotasks.splice(i, 1);
   }
 
-  deleteInProgressTask(i: number) {
-    this.inprogressTasks.splice(i, 1);
-  }
-
-  deleteDoneTask(i: number) {
-    this.doneTasks.splice(i, 1);
-  }
-
-  watchdone() {
-    console.log(this.doneTasks);
+  deleteCompletedTask(i: number) {
+    this.completedTasks.splice(i, 1);
   }
 
   request() {
     fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
       body: JSON.stringify({
-        doneTasks: this.doneTasks,
+        doneTasks: this.completedTasks,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
