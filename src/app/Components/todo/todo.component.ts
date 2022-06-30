@@ -7,8 +7,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./todo.component.scss'],
 })
 export class TodoComponent implements OnInit {
-	
-  constructor() {}
+  todoForm!: FormGroup;
 
-  ngOnInit(): void {}
+  constructor(private formbuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+	this.todoForm = this.formbuilder.group({
+		item: ['', Validators.required]
+	})
+  }
 }
