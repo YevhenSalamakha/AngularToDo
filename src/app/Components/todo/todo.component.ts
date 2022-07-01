@@ -13,48 +13,48 @@ import { Itask } from 'src/app/model/task';
   styleUrls: ['./todo.component.scss'],
 })
 export class TodoComponent implements OnInit {
-  todoForm!: FormGroup;
-  toDotasks: Itask[] = [];
-  completedTasks: Itask[] = [];
-  updateIndex!: any;
-  isEditEnabled: boolean = false;
+  public toDoForm!: FormGroup;
+  public toDotasks: Itask[] = [];
+  public completedTasks: Itask[] = [];
+  public updateIndex!: number;
+  public isEditEnabled: boolean = false;
 
   constructor(private formbuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.todoForm = this.formbuilder.group({
-      item: ['', Validators.required],
+    this.toDoForm = this.formbuilder.group({
+      toDoItem: ['', Validators.required],
     });
   }
 
-  addTask() {
+  public addTask() {
     this.toDotasks.push({
-      description: this.todoForm.value.item,
+      description: this.toDoForm.value.item,
       done: false,
     });
-    this.todoForm.reset();
+    this.toDoForm.reset();
   }
 
-  editTask(item: Itask, i: number) {
-    this.todoForm.controls['item'].setValue(item.description);
-    this.updateIndex = i;
+  public editTask(item: Itask, index: number) {
+    this.toDoForm.controls['item'].setValue(item.description);
+    this.updateIndex = index;
     this.isEditEnabled = true;
   }
 
-  updateTask() {
-    this.toDotasks[this.updateIndex].description = this.todoForm.value.item;
+  public updateTask() {
+    this.toDotasks[this.updateIndex].description = this.toDoForm.value.item;
     this.toDotasks[this.updateIndex].done = false;
-    this.todoForm.reset();
-    this.updateIndex = undefined;
+    this.toDoForm.reset();
+   
     this.isEditEnabled = false;
   }
 
-  deleteToDoTask(i: number) {
-    this.toDotasks.splice(i, 1);
+  public deleteToDoTask(index: number) {
+    this.toDotasks.splice(index, 1);
   }
 
-  deleteCompletedTask(i: number) {
-    this.completedTasks.splice(i, 1);
+  public deleteCompletedTask(index: number) {
+    this.completedTasks.splice(index, 1);
   }
 
   request() {
@@ -71,7 +71,7 @@ export class TodoComponent implements OnInit {
       .then((json) => console.log(json));
   }
 
-  drop(event: CdkDragDrop<Itask[]>) {
+  public drop(event: CdkDragDrop<Itask[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
