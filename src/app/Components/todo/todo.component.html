@@ -6,11 +6,7 @@
           <form [formGroup]="toDoForm">
             <mat-form-field appearance="outline">
               <mat-label>Task Name</mat-label>
-              <input
-                formControlName="toDoItem"
-                matInput
-                placeholder="Write task"
-              />
+              <input formControlName="item" matInput placeholder="Write task" />
               <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
               <mat-hint>Add task name</mat-hint>
             </mat-form-field>

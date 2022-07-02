@@ -3,27 +3,33 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Itask } from 'src/app/model/task';
+import { todoTasksService } from 'src/app/services/todoTasks.service';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss'],
 })
-export class TodoComponent implements OnInit {
-  public toDoForm!: FormGroup;
+export class TodoComponent implements OnInit, OnDestroy {
+  public toDoForm: FormGroup;
   public toDotasks: Itask[] = [];
   public completedTasks: Itask[] = [];
-  public updateIndex!: number;
+  public updateIndex: number;
   public isEditEnabled: boolean = false;
+  private $destroy = new Subject();
 
-  constructor(private formbuilder: FormBuilder) {}
+  constructor(
+    private formbuilder: FormBuilder,
+    private todoTasksService: todoTasksService
+  ) {}
 
   ngOnInit(): void {
     this.toDoForm = this.formbuilder.group({
-      toDoItem: ['', Validators.required],
+      item: ['', Validators.required],
     });
   }
 
@@ -45,30 +51,28 @@ export class TodoComponent implements OnInit {
     this.toDotasks[this.updateIndex].description = this.toDoForm.value.item;
     this.toDotasks[this.updateIndex].done = false;
     this.toDoForm.reset();
-   
+
     this.isEditEnabled = false;
   }
 
   public deleteToDoTask(index: number) {
+    console.log(this.toDotasks);
     this.toDotasks.splice(index, 1);
+    console.log(this.toDotasks[this.updateIndex]);
+    console.log(index);
   }
 
   public deleteCompletedTask(index: number) {
     this.completedTasks.splice(index, 1);
   }
 
-  request() {
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify({
-        doneTasks: this.completedTasks,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+  public request() {
+    this.todoTasksService
+      .postDoneTasks(this.completedTasks)
+      .pipe(takeUntil(this.$destroy))
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   public drop(event: CdkDragDrop<Itask[]>) {
@@ -86,5 +90,10 @@ export class TodoComponent implements OnInit {
         event.currentIndex
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.$destroy.next(true);
+    this.$destroy.complete();
   }
 }
