@@ -56,10 +56,7 @@ export class TodoComponent implements OnInit, OnDestroy {
   }
 
   public deleteToDoTask(index: number) {
-    console.log(this.toDotasks);
     this.toDotasks.splice(index, 1);
-    console.log(this.toDotasks[this.updateIndex]);
-    console.log(index);
   }
 
   public deleteCompletedTask(index: number) {

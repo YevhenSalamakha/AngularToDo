@@ -1,18 +1,27 @@
+@mixin white-color {
+  background-color: white;
+}
+
 .container-fluid {
   .background {
-    background: #303030;
+    @include white-color();
+    border-radius: 15px;
     height: 93vh;
 
-    .host .mat-form-field {
+    .mat-form-field {
       width: 100%;
     }
   }
 
   .row {
+    background-color {
+      background-color: rgb(69, 72, 77);
+    }
+
     .head-title {
-      background-color: rgb(228, 222, 222);
+      padding-left: 10px;
       border-radius: 5px;
-      color: #777272;
+      color: #d1d1d1;
       font-size: 1.5rem;
       font-weight: 700;
       span {
@@ -23,15 +32,14 @@
     .example-container {
       width: 400px;
       max-width: 100%;
-      margin: 0 25px 25px 0;
+      margin: 0 25px 25px 150px;
       display: inline-block;
       vertical-align: top;
     }
-
     .example-list {
+      @include white-color();
       border: solid 1px #ccc;
       min-height: 60px;
-      background: white;
       border-radius: 4px;
       overflow: hidden;
       display: block;
@@ -43,6 +51,7 @@
     }
 
     .example-box {
+      @include white-color();
       padding: 20px 10px;
       border-bottom: solid 1px #ccc;
       color: rgba(0, 0, 0, 0.87);
@@ -52,7 +61,7 @@
       justify-content: space-between;
       box-sizing: border-box;
       cursor: move;
-      background: white;
+      border-radius: 4px;
       font-size: 14px;
     }
 
